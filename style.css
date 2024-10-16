@@ -36,35 +36,27 @@ body {
 #box {
   width: var(--width);
   height: var(--height);
-  border-radius: var(--borderRadius);
-  -webkit-mask: -webkit-gradient(
-        linear,
-        left top,
-        left bottom,
-        from(#fff),
-        to(#fff)
-      )
-      top,
-    -webkit-gradient(linear, left top, left bottom, from(#fff), to(#fff)) bottom,
-    -webkit-gradient(linear, left top, left bottom, from(#fff), to(#fff)) left,
-    -webkit-gradient(linear, left top, left bottom, from(#fff), to(#fff)) right;
-  -webkit-mask: linear-gradient(#fff, #fff) top,
-    linear-gradient(#fff, #fff) bottom, linear-gradient(#fff, #fff) left,
-    linear-gradient(#fff, #fff) right;
-  mask: -webkit-gradient(linear, left top, left bottom, from(#fff), to(#fff))
-      top,
-    -webkit-gradient(linear, left top, left bottom, from(#fff), to(#fff)) bottom,
-    -webkit-gradient(linear, left top, left bottom, from(#fff), to(#fff)) left,
-    -webkit-gradient(linear, left top, left bottom, from(#fff), to(#fff)) right;
-  mask: linear-gradient(#fff, #fff) top, linear-gradient(#fff, #fff) bottom,
-    linear-gradient(#fff, #fff) left, linear-gradient(#fff, #fff) right;
-  -webkit-mask-size: 100% var(--borderWidth), 100% var(--borderWidth),
-    var(--borderWidth) 100%, var(--borderWidth) 100%;
-  mask-size: 100% var(--borderWidth), 100% var(--borderWidth),
-    var(--borderWidth) 100%, var(--borderWidth) 100%;
-  -webkit-mask-repeat: no-repeat;
-  mask-repeat: no-repeat;
+  position: relative;
   display: none;
+}
+
+#box::before {
+  content: "";
+  position: absolute;
+  inset: 0;
+  border-radius: var(--borderRadius);
+  padding: var(--borderWidth);
+  background: var(--gradient);
+  -webkit-mask:
+    linear-gradient(#fff 0 0) content-box,
+    linear-gradient(#fff 0 0);
+  mask:
+    linear-gradient(#fff 0 0) content-box,
+    linear-gradient(#fff 0 0);
+  -webkit-mask-composite: xor;
+  mask-composite: exclude;
+  animation: animatedgradient var(--duration) ease-in-out infinite;
+  background-size: 200% 200%;
 }
 
 #circle {
@@ -93,7 +85,11 @@ body {
   position: relative;
 }
 
-.gradient-border:after {
+#box.gradient-border::after {
+  content: none;
+}
+
+/* .gradient-border:after {
   content: "";
   position: absolute;
   top: calc(-1 * var(--borderWidth));
@@ -105,7 +101,7 @@ body {
   -webkit-animation: animatedgradient var(--duration) ease-in-out infinite;
   animation: animatedgradient var(--duration) ease-in-out infinite;
   background-size: 200% 200%;
-}
+} */
 
 @-webkit-keyframes animatedgradient {
   0% {
